@@ -1,6 +1,6 @@
 package at.fhtw.swen2.tutorial.service;
 
-import at.fhtw.swen2.tutorial.persistence.DatabaseInitializer;
+import at.fhtw.swen2.tutorial.persistence.TourDatabaseInitializer;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -26,7 +26,7 @@ public class PdfGeneratorDemo {
         return templateEngine.process("thymeleaf/hello_world", context);
     }
 
-    private String parseThymeleafTemplatePersonList() {
+    private String parseThymeleafTemplateTourList() {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -35,10 +35,10 @@ public class PdfGeneratorDemo {
         templateEngine.setTemplateResolver(templateResolver);
 
         Context context = new Context();
-        context.setVariable("header", "Personen");
-        context.setVariable("persons", DatabaseInitializer.getInitialDemoDataDtos());
+        context.setVariable("header", "Touren");
+        context.setVariable("Tours", TourDatabaseInitializer.getInitialDemoDataDtos());
 
-        return templateEngine.process("thymeleaf/person_list", context);
+        return templateEngine.process("thymeleaf/Tour_list", context);
     }
 
     private void generatePdfFromHtml(String html) throws Exception {
@@ -54,7 +54,7 @@ public class PdfGeneratorDemo {
 
     public void startDemo() throws Exception {
         //generatePdfFromHtml(parseThymeleafTemplateHelloWorld());
-        generatePdfFromHtml(parseThymeleafTemplatePersonList());
+        generatePdfFromHtml(parseThymeleafTemplateTourList());
     }
 
     public static void main(String[] args) throws Exception {

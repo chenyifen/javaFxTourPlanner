@@ -11,12 +11,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${persons.empty}">
+    <tr th:if="${Tours.empty}">
         <td colspan="2"> No Books Available </td>
     </tr>
-    <tr th:each="person : ${persons}">
-        <td><span th:text="${person.id}"> Id </span></td>
-        <td><span th:text="${person.name}"> Name </span></td>
+    <tr th:each="tour : ${Tours}">
+        <td><span th:text="${tour.id}"> Id </span></td>
+        <td><span th:text="${tour.name}"> Name </span></td>
     </tr>
     </tbody>
 </table>
