@@ -1,5 +1,6 @@
 package at.fhtw.swen2.tutorial.presentation.viewmodel;
 
+import at.fhtw.swen2.tutorial.presentation.TourSelectionListener;
 import at.fhtw.swen2.tutorial.service.TourService;
 import at.fhtw.swen2.tutorial.service.dto.Tour;
 import javafx.collections.FXCollections;
@@ -13,32 +14,47 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class TourListViewModel {
+public class TourListViewModel implements TourSelectionListener {
 
     @Autowired
-    TourService TourService;
+    TourService tourService;
 
-    private List<Tour> masterData = new ArrayList<>();
-    private ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
+
+    private final List<Tour> masterData = new ArrayList<>();
+    private final ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
+    private Tour selectedItem = null;
 
     public ObservableList<Tour> getTourListItems() {
         return tourListItems;
     }
 
     public void addItem(Tour tour) {
-        tourListItems.add(tour);
-        masterData.add(tour);
+        tourService.addNew(tour);
+        initList(true);
     }
 
-    public void clearItems(){ tourListItems.clear(); }
+    public void clearItems() {
+        tourListItems.clear();
+    }
 
-    public void initList(){
-        TourService.getTourList().forEach(p -> {
-            addItem(p);
+    public void initList(Boolean dataChanged) {
+        if(!dataChanged && tourListItems.size() > 0){
+            //already init.
+            return;
+        }
+        tourListItems.clear();
+        masterData.clear();
+        tourService.getTourList().forEach(p -> {
+            tourListItems.add(p);
+            masterData.add(p);
         });
     }
 
-    public void filterList(String searchText){
+    public Tour getSelectedTour() {
+        return selectedItem;
+    }
+
+    public void filterList(String searchText) {
         Task<List<Tour>> task = new Task<>() {
             @Override
             protected List<Tour> call() throws Exception {
@@ -60,5 +76,27 @@ public class TourListViewModel {
 
     }
 
+    public void deleteItem(Tour tour) {
+        if (selectedItem != null && selectedItem.getId() == tour.getId()) {
+            selectedItem = null;
+        }
+        if (tour != null) {
+            tourService.delete(tour);
+            initList(true);
+        }
+    }
 
+
+    public void edit(Tour tour) {
+        if (tour != null) {
+            tourService.update(tour);
+            initList(true);
+        }
+    }
+
+
+    @Override
+    public void tourSelected(Tour tour) {
+        selectedItem = tour;
+    }
 }

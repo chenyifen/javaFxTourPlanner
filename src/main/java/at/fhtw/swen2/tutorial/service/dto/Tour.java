@@ -16,5 +16,16 @@ public class Tour {
     private String estimatedTime;
     private String routeInformation;
 
+    public String toString(){
+        StringBuilder builder = new StringBuilder(name);
+        builder.append(description);
+        builder.append(from);
+        builder.append(to);
+        builder.append(transportType);
+        builder.append(tourDistance);
+        builder.append(estimatedTime);
+        builder.append(routeInformation);
+        return builder().toString();
+    }
 
 }

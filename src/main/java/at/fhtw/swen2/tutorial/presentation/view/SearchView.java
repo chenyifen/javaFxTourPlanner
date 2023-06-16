@@ -48,7 +48,7 @@ public class SearchView {
         });
     }
 
-    private void loadData() {
+    public void loadData() {
         searchViewModel.search();
     }
 

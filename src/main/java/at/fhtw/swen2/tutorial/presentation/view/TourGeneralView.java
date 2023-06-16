@@ -1,7 +1,7 @@
 package at.fhtw.swen2.tutorial.presentation.view;
 
 import at.fhtw.swen2.tutorial.presentation.TourSelectionPublisher;
-import at.fhtw.swen2.tutorial.presentation.viewmodel.TourDetailViewModel;
+import at.fhtw.swen2.tutorial.presentation.viewmodel.TourGeneralViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -17,10 +17,10 @@ import java.util.ResourceBundle;
 
 @Component
 @Scope("prototype")
-public class TourDetailView implements Initializable {
+public class TourGeneralView implements Initializable {
 
     @Autowired
-    public TourDetailViewModel tourDetailViewModel;
+    public TourGeneralViewModel tourGeneralViewModel;
 
     @FXML
     public TableView tableView = new TableView<>();
@@ -29,8 +29,8 @@ public class TourDetailView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle rb) {
-        TourSelectionPublisher.getInstance().register(tourDetailViewModel);
-        tableView.setItems(tourDetailViewModel.getTourListItems());
+        TourSelectionPublisher.getInstance().register(tourGeneralViewModel);
+        tableView.setItems(tourGeneralViewModel.getTourListItems());
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         TableColumn id = new TableColumn("ID");
@@ -56,7 +56,7 @@ public class TourDetailView implements Initializable {
         tableView.getColumns().addAll(id, name, description, from, to, transportType, tourDistance, estimatedTime, routeInformation);
 
         dataContainer.getChildren().add(tableView);
-        tourDetailViewModel.initList();
+        tourGeneralViewModel.initList();
     }
 
 }

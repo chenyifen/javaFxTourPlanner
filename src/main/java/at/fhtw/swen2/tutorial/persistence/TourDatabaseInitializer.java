@@ -23,9 +23,9 @@ public class TourDatabaseInitializer implements InitializingBean {
 
     public static List<TourEntity> getInitialDemoData() {
         List<TourEntity> TourList = new ArrayList<>();
-        TourList.add(TourEntity.builder().id(5L).name("Tour 1").build());
-        TourList.add(TourEntity.builder().id(7L).name("Tour 2").build());
-        TourList.add(TourEntity.builder().id(11L).name("Tour 3").build());
+//        TourList.add(TourEntity.builder().id(5L).name("Tour 1").build());
+//        TourList.add(TourEntity.builder().id(7L).name("Tour 2").build());
+//        TourList.add(TourEntity.builder().id(11L).name("Tour 3").build());
         return TourList;
     }
     public static List<Tour> getInitialDemoDataDtos() {

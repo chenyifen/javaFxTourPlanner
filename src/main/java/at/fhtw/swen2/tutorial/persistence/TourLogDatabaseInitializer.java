@@ -1,8 +1,11 @@
 package at.fhtw.swen2.tutorial.persistence;
 
 import at.fhtw.swen2.tutorial.persistence.entities.TourEntity;
+import at.fhtw.swen2.tutorial.persistence.entities.TourLogEntity;
+import at.fhtw.swen2.tutorial.persistence.repositories.TourLogRepository;
 import at.fhtw.swen2.tutorial.persistence.repositories.TourRepository;
 import at.fhtw.swen2.tutorial.service.dto.Tour;
+import at.fhtw.swen2.tutorial.service.dto.TourLog;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,23 +17,23 @@ import java.util.List;
 public class TourLogDatabaseInitializer implements InitializingBean {
 
     @Autowired
-    private TourRepository tourRepository;
+    private TourLogRepository tourLogRepository;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        tourRepository.saveAll(getInitialDemoData());
+        tourLogRepository.saveAll(getInitialDemoData());
     }
 
-    public static List<TourEntity> getInitialDemoData() {
-        List<TourEntity> tourList = new ArrayList<>();
+    public static List<TourLogEntity> getInitialDemoData() {
+        List<TourLogEntity> tourList = new ArrayList<>();
         //TODO
-        tourList.add(TourEntity.builder().id(5L).name("Tour 4").build());
-        tourList.add(TourEntity.builder().id(7L).name("Tour 5").build());
-        tourList.add(TourEntity.builder().id(11L).name("Tour 6").build());
+//        tourList.add(TourEntity.builder().id(5L).name("Tour 4").build());
+//        tourList.add(TourEntity.builder().id(7L).name("Tour 5").build());
+//        tourList.add(TourEntity.builder().id(11L).name("Tour 6").build());
         return tourList;
     }
-    public static List<Tour> getInitialDemoDataDtos() {
-        List<Tour> tourList = new ArrayList<>();
+    public static List<TourLog> getInitialDemoDataDtos() {
+        List<TourLog> tourList = new ArrayList<>();
 //        tourList.add(Tour.builder().id(5L).name("John").build());
 //        tourList.add(Tour.builder().id(7L).name("Albert").build());
 //        tourList.add(Tour.builder().id(11L).name("Monica").build());

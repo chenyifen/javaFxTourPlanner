@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,30 +20,30 @@ estimated time, route information (an image with the tour map)
 
 Tour Log:  date/time, comment, difficulty, total time, and rating
  */
-//@Table(name = "tours")
+@Table(name = "tour")
 
 public class TourEntity {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column
+        @Column(name = "tour_id")
         private Long id;
-        @Column
+        @Column(name = "name")
         private String name;
-        @Column
+        @Column(name = "description")
         private String description;
-        @Column
+        @Column(name = "from_location")
         private String fromLocation;
-        @Column
+        @Column(name = "to_location")
         private String toLocation;
-        @Column
+        @Column(name = "transport_type")
         private String transportType;
-        @Column
+        @Column(name = "tour_distance")
         private String tourDistance;
-        @Column
+        @Column(name = "estimated_time")
         private String estimatedTime;
-        @Column
+        @Column(name = "route_information")
         private String routeInformation;
-
-
+        @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+        private List<TourLogEntity> tourLogs = new ArrayList<>();
 }

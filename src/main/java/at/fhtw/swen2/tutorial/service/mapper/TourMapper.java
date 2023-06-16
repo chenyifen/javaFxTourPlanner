@@ -5,7 +5,7 @@ import at.fhtw.swen2.tutorial.service.dto.Tour;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TourMapper extends AbstractMapper<TourEntity, Tour> {
+public class  TourMapper extends AbstractMapper<TourEntity, Tour> {
 
     @Override
     public Tour fromEntity(TourEntity entity) {
