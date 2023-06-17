@@ -11,15 +11,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class TourGeneralViewModel implements TourSelectionListener {
 
+    private final ObservableList<Tour> tourGeneralItem = FXCollections.observableArrayList();
     @Autowired
     TourService TourService;
     @Autowired
     private TourListViewModel tourListViewModel;
-    private final ObservableList<Tour> tourGeneralItem = FXCollections.observableArrayList();
     private Tour selectedItem = null;
-
-
-
 
 
     public ObservableList<Tour> getTourGeneralItem() {
@@ -27,10 +24,10 @@ public class TourGeneralViewModel implements TourSelectionListener {
     }
 
 
-    public void initList(){
+    public void initList() {
         tourListViewModel.initList(false);
         tourGeneralItem.clear();
-        if(selectedItem != null) {
+        if (selectedItem != null) {
             tourGeneralItem.add(selectedItem);
         }
     }
