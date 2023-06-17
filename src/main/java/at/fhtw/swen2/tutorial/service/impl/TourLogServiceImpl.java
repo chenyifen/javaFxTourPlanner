@@ -52,7 +52,8 @@ public class TourLogServiceImpl implements TourLogService {
         if (tourLog == null || tourLog.getTour() == null) {
             return null;
         }
-        TourEntity tour = tourRepository.getOne(tourLog.getTour().getTourId()); // 获取对应的TourEntity
+        TourEntity tour = tourRepository.getOne(tourLog.getTour().getTourId());
+        log.info("Add log to : " + tour.toString());
         if (tour == null) {
             return null;
         }
@@ -62,7 +63,7 @@ public class TourLogServiceImpl implements TourLogService {
         tourLogs.add(entity);
         tour.setTourLogs(tourLogs);
         tourLogRepository.save(entity);
-        tourRepository.save(tour);
+//        tourRepository.save(tour);
         log.info("Add New Tour Log:" + entity.getName() + ", To Tour_ID:" + tour.getTour_id());
         return tourLog;
     }

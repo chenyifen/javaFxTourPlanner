@@ -89,56 +89,23 @@ public class TourEditDialogView extends Dialog<Tour> {
                     alert.setContentText("Please fill in all fields.");
                     alert.showAndWait();
                 } else {
-                    Task<MapQuestRoute> task = new Task<MapQuestRoute>() {
-                        @Override
-                        protected MapQuestRoute call() throws Exception {
-                            MapQuestRoute route = mapQuestService.getRoute(fromField.getText(), toField.getText());
-                            return route;
-                        }
-
-                        @Override
-                        protected void succeeded() {
-                            MapQuestRoute route = getValue();
-                            Tour tour = buildTour(tourId, nameField.getText(), transportTypeField.getText(), descriptionField.getText(), fromField.getText(), toField.getText(), route);
-                            setResult(tour);
-                        }
-
-                        @Override
-                        protected void failed() {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Error");
-                            alert.setContentText("Failed to get MapQuest route information.");
-                            alert.show();
-                            MapQuestRoute route = new MapQuestRoute();
-                            route.setDistance(0);
-                            route.setMapUrl("");
-                            route.setTime(0);
-                            Tour tour = buildTour(tourId, nameField.getText(), transportTypeField.getText(), descriptionField.getText(), fromField.getText(), toField.getText(), route);
-                            setResult(tour);
-                        }
-                    };
-
-                    Thread thread = new Thread(task);
-                    thread.setDaemon(true);
-                    thread.start();
                     MapQuestRoute route = mapQuestService.getRoute(fromField.getText(), toField.getText());
+                    Tour tour = Tour.builder().tourId(tourId)
+                            .name(nameField.getText())
+                            .description(descriptionField.getText())
+                            .from(fromField.getText())
+                            .to(toField.getText())
+                            .transportType(transportTypeField.getText())
+                            .tourDistance(String.valueOf(route.getDistance()))
+                            .estimatedTime(String.valueOf(route.getTime()))
+                            .routeInformation(route.getMapUrl()).build();
+                    setResult(tour);
+                    return tour;
                 }
             }
             return null;
         });
     }
-    private Tour buildTour(Long tourId, String name, String transportType, String description, String from, String to, MapQuestRoute route) {
-        return Tour.builder()
-                .tourId(tourId)
-                .name(name)
-                .transportType(transportType)
-                .description(description)
-                .from(from)
-                .to(to)
-                .tourDistance(String.valueOf(route.getDistance()))
-                .routeInformation(route.getMapUrl())
-                .estimatedTime(String.valueOf(route.getTime()))
-                .build();
-    }
+
 
 }

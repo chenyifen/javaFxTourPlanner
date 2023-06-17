@@ -8,12 +8,9 @@ import at.fhtw.swen2.tutorial.service.mapper.TourMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.UnexpectedRollbackException;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.RollbackException;
 import java.util.List;
 
 @Service
@@ -76,7 +73,7 @@ TourServiceImpl implements TourService {
             entity.setTourDistance(tour.getTourDistance());
             entity.setRouteInformation(tour.getRouteInformation());
             entity.setTransportType(entity.getTransportType());
-            log.info("going to merge : " +entity.getName());
+            log.info("going to merge : " + entity.getName());
             entityManager.persist(entity);
             return true;
         } catch (Exception e) {

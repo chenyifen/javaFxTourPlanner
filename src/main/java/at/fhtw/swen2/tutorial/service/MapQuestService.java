@@ -64,13 +64,15 @@ public class MapQuestService {
             JsonNode routeNode = rootNode.get("route");
             if (routeNode != null) {
                 JsonNode legsNode = routeNode.get("legs");
-                JsonNode firstLegNode = legsNode.get(0);
-                JsonNode maneuversNode = firstLegNode.get("maneuvers");
-                JsonNode firstManeuverNode = maneuversNode.get(0);
+                if(legsNode != null) {
+                    JsonNode firstLegNode = legsNode.get(0);
+                    JsonNode maneuversNode = firstLegNode.get("maneuvers");
+                    JsonNode firstManeuverNode = maneuversNode.get(0);
 
-                route.setDistance(firstManeuverNode.get("distance").doubleValue());
-                route.setMapUrl(firstManeuverNode.get("mapUrl").textValue().replace("size=225,160", "size=450,250").replace("zoom=16", "zoom=10"));
-                route.setTime(firstManeuverNode.get("time").intValue());
+                    route.setDistance(firstManeuverNode.get("distance").doubleValue());
+                    route.setMapUrl(firstManeuverNode.get("mapUrl").textValue().replace("size=225,160", "size=450,250").replace("zoom=16", "zoom=10"));
+                    route.setTime(firstManeuverNode.get("time").intValue());
+                }
                 return route;
             }
         } catch (JsonProcessingException e) {
