@@ -88,7 +88,6 @@ public class TourEditDialogView extends Dialog<Tour> {
                     alert.setHeaderText(null);
                     alert.setContentText("Please fill in all fields.");
                     alert.showAndWait();
-                    return null;
                 } else {
                     Task<MapQuestRoute> task = new Task<MapQuestRoute>() {
                         @Override
@@ -110,6 +109,12 @@ public class TourEditDialogView extends Dialog<Tour> {
                             alert.setTitle("Error");
                             alert.setContentText("Failed to get MapQuest route information.");
                             alert.show();
+                            MapQuestRoute route = new MapQuestRoute();
+                            route.setDistance(0);
+                            route.setMapUrl("");
+                            route.setTime(0);
+                            Tour tour = buildTour(tourId, nameField.getText(), transportTypeField.getText(), descriptionField.getText(), fromField.getText(), toField.getText(), route);
+                            setResult(tour);
                         }
                     };
 

@@ -2,6 +2,7 @@ package at.fhtw.swen2.tutorial.presentation.view;
 
 import at.fhtw.swen2.tutorial.presentation.TourSelectionPublisher;
 import at.fhtw.swen2.tutorial.presentation.viewmodel.TourGeneralViewModel;
+import at.fhtw.swen2.tutorial.presentation.viewmodel.TourListViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -24,6 +25,9 @@ public class TourGeneralView implements Initializable {
 
     @FXML
     public TableView tableView = new TableView<>();
+
+    @Autowired
+    private TourListViewModel tourListViewModel;
     @FXML
     private VBox dataContainer;
 
@@ -58,5 +62,10 @@ public class TourGeneralView implements Initializable {
         dataContainer.getChildren().add(tableView);
         tourGeneralViewModel.initList();
     }
+
+    public void filterList(String searchText) {
+        tourListViewModel.filterList(searchText);
+    }
+
 
 }

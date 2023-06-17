@@ -32,7 +32,7 @@ public class TourListViewModel implements TourSelectionListener {
 
     public void addItem(Tour tour) {
         tourService.addNew(tour);
-        initList(true);
+        tourListItems.add(tour);
     }
 
     public void clearItems() {
@@ -71,6 +71,8 @@ public class TourListViewModel implements TourSelectionListener {
             tourListItems.add(p);
             masterData.add(p);
         });
+
+        log.info("initList : tourListItems.size = " + tourListItems.size());
     }
 
     public Tour getSelectedTour() {
@@ -82,9 +84,10 @@ public class TourListViewModel implements TourSelectionListener {
             @Override
             protected List<Tour> call() throws Exception {
                 updateMessage("Loading data");
+                log.info("Tour to string : "+masterData.get(0).toString());
                 return masterData
                         .stream()
-                        .filter(value -> value.getName().toLowerCase().contains(searchText.toLowerCase()))
+                        .filter(value -> value.toString().toLowerCase().contains(searchText.toLowerCase()))
                         .collect(Collectors.toList());
             }
         };
@@ -100,20 +103,27 @@ public class TourListViewModel implements TourSelectionListener {
     }
 
     public void deleteItem(Tour tour) {
-        if (selectedItem != null && selectedItem.getTourId() == tour.getTourId()) {
-            selectedItem = null;
-        }
+//        if (selectedItem != null && selectedItem.getTourId() == tour.getTourId()) {
+//            selectedItem = null;
+//        }
         if (tour != null) {
+            tourListItems.remove(tour);
             tourService.delete(tour);
-            initList(true);
         }
     }
 
 
     public void edit(Tour tour) {
         if (tour != null) {
+            for(int i = 0; i < tourListItems.size(); i++)
+            {
+                if(tourListItems.get(i).getTourId() == tour.getTourId()){
+                    log.info("update Tour: " + tourListItems.get(i).getName()+" at index:"+i );
+
+                    tourListItems.set(i , tour);
+                }
+            }
             tourService.update(tour);
-            initList(true);
         }
     }
 

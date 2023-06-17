@@ -30,7 +30,7 @@ public class TourLogViewModel implements TourSelectionListener, TourLogSelection
 
     public ObservableList<TourLog> getTourLogItems() {
         tourLogItems.forEach(p -> {
-            log.info("Tour Log: id =  "+p.getLogId());
+            log.info("Tour Log: id =  " + p.getLogId());
         });
         return tourLogItems;
     }
@@ -54,6 +54,7 @@ public class TourLogViewModel implements TourSelectionListener, TourLogSelection
             return;
         }
         tourLogItems.clear();
+        masterData.clear();
         tourLogService.getTourLogList().forEach(p -> {
             masterData.add(p);
         });
@@ -63,7 +64,6 @@ public class TourLogViewModel implements TourSelectionListener, TourLogSelection
     }
 
     public void filterList(String searchText) {
-        //TODO
         Task<List<TourLog>> task = new Task<>() {
             @Override
             protected List<TourLog> call() throws Exception {
@@ -110,7 +110,7 @@ public class TourLogViewModel implements TourSelectionListener, TourLogSelection
     @Override
     public void tourLogSelected(TourLog tourLog) {
         if (tourLog != null) {
-            log.info("tour log Selected: " + tourLog.toString());
+            log.info("tour log Selected: " + tourLog);
             selectedTourLog = tourLog;
         }
     }

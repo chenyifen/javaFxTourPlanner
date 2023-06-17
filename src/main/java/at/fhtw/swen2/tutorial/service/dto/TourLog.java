@@ -26,6 +26,6 @@ public class TourLog {
         builder.append(difficulty);
         builder.append(totalTime);
         builder.append(rating);
-        return builder().toString();
+        return builder.toString();
     }
 }

@@ -72,7 +72,13 @@ public class MapQuestService {
 
             return route;
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to parse JSON response from MapQuest API", e);
+            // 提取所需的信息
+            MapQuestRoute route = new MapQuestRoute();
+            route.setDistance(0);
+            route.setMapUrl("");
+            route.setTime(0);
+            return route;
+//            throw new RuntimeException("Failed to parse JSON response from MapQuest API", e);
         }
     }
         public Image getStaticMapImage(String url) {

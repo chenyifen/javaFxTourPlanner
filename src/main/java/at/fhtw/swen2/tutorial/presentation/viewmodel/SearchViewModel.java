@@ -29,7 +29,4 @@ public class SearchViewModel {
     public void search() {
         TourListViewModel.filterList(getSearchString());
     }
-
-
-
 }

@@ -82,7 +82,6 @@ public class TourLogEditDialogView extends Dialog<TourLog> {
                     alert.setHeaderText(null);
                     alert.setContentText("Please fill in all fields.");
                     alert.showAndWait();
-                    return null;
                 } else {
                     //TODO api get
                     TourLog tourLog = TourLog.builder()

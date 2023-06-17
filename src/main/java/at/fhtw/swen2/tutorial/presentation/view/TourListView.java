@@ -6,6 +6,7 @@ import at.fhtw.swen2.tutorial.presentation.viewmodel.TourListViewModel;
 import at.fhtw.swen2.tutorial.service.TourService;
 import at.fhtw.swen2.tutorial.service.dto.Tour;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -44,7 +45,7 @@ public class TourListView implements Initializable {
     public void initialize(URL location, ResourceBundle rb) {
         TourSelectionPublisher.getInstance().register(tourListViewModel);
         TourSelectionPublisher.getInstance().register(routeViewModel);
-        tourListViewModel.initList(false);
+//        tourListViewModel.initList(true);
         ObservableList<Tour> items = tourListViewModel.getTourListItems();
         listView.setItems(items);
         listView.setCellFactory(param -> new ListCell<Tour>() {
@@ -58,7 +59,6 @@ public class TourListView implements Initializable {
                 }
             }
         });
-
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             TourSelectionPublisher.getInstance().notify(newValue);

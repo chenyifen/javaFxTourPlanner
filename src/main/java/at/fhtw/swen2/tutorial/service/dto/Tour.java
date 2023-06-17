@@ -30,7 +30,7 @@ public class Tour {
         builder.append(tourDistance);
         builder.append(estimatedTime);
         builder.append(routeInformation);
-        return builder().toString();
+        return builder.toString();
     }
 
 }

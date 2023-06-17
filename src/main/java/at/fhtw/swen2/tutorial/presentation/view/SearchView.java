@@ -5,6 +5,7 @@ import at.fhtw.swen2.tutorial.presentation.viewmodel.SearchViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import lombok.extern.slf4j.Slf4j;
