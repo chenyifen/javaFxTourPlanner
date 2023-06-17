@@ -24,7 +24,10 @@ public class RouteViewModel implements TourSelectionListener {
     @Override
     public void tourSelected(Tour tour) {
         selectedItem = tour;
-        url.set(tour.getRouteInformation());
+        if(tour != null) {
+            url.set(tour.getRouteInformation());
+        }else
+            url.set("");
     }
 
     public StringProperty getUrl(){

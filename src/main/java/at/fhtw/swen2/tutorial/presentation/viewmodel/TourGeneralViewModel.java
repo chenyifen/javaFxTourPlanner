@@ -15,23 +15,23 @@ public class TourGeneralViewModel implements TourSelectionListener {
     TourService TourService;
     @Autowired
     private TourListViewModel tourListViewModel;
-    private final ObservableList<Tour> tourListItems = FXCollections.observableArrayList();
+    private final ObservableList<Tour> tourGeneralItem = FXCollections.observableArrayList();
     private Tour selectedItem = null;
 
 
 
 
 
-    public ObservableList<Tour> getTourListItems() {
-        return tourListItems;
+    public ObservableList<Tour> getTourGeneralItem() {
+        return tourGeneralItem;
     }
 
 
     public void initList(){
         tourListViewModel.initList(false);
-        tourListItems.clear();
+        tourGeneralItem.clear();
         if(selectedItem != null) {
-            tourListItems.add(selectedItem);
+            tourGeneralItem.add(selectedItem);
         }
     }
 

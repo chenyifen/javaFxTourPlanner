@@ -67,7 +67,7 @@ public class MapQuestService {
             // 提取所需的信息
             MapQuestRoute route = new MapQuestRoute();
             route.setDistance(firstManeuverNode.get("distance").doubleValue());
-            route.setMapUrl(firstManeuverNode.get("mapUrl").textValue().replace("size=225,160", "size=600,200"));
+            route.setMapUrl(firstManeuverNode.get("mapUrl").textValue().replace("size=225,160", "size=450,250").replace("zoom=16","zoom=32"));
             route.setTime(firstManeuverNode.get("time").intValue());
 
             return route;

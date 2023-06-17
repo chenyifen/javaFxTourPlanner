@@ -4,6 +4,7 @@ import at.fhtw.swen2.tutorial.ApplicationContextProvider;
 import at.fhtw.swen2.tutorial.service.MapQuestService;
 import at.fhtw.swen2.tutorial.service.dto.MapQuestRoute;
 import at.fhtw.swen2.tutorial.service.dto.Tour;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -89,25 +90,50 @@ public class TourEditDialogView extends Dialog<Tour> {
                     alert.showAndWait();
                     return null;
                 } else {
+                    Task<MapQuestRoute> task = new Task<MapQuestRoute>() {
+                        @Override
+                        protected MapQuestRoute call() throws Exception {
+                            MapQuestRoute route = mapQuestService.getRoute(fromField.getText(), toField.getText());
+                            return route;
+                        }
+
+                        @Override
+                        protected void succeeded() {
+                            MapQuestRoute route = getValue();
+                            Tour tour = buildTour(tourId, nameField.getText(), transportTypeField.getText(), descriptionField.getText(), fromField.getText(), toField.getText(), route);
+                            setResult(tour);
+                        }
+
+                        @Override
+                        protected void failed() {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setContentText("Failed to get MapQuest route information.");
+                            alert.show();
+                        }
+                    };
+
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true);
+                    thread.start();
                     MapQuestRoute route = mapQuestService.getRoute(fromField.getText(), toField.getText());
-                    log.info("get Rounte Info: " + route.toString());
-                    Tour tour = Tour.builder()
-                            .tourId(tourId)
-                            .name(nameField.getText())
-                            .transportType(transportTypeField.getText())
-                            .description(descriptionField.getText())
-                            .from(fromField.getText())
-                            .to(toField.getText())
-                            .tourDistance(String.valueOf(route.getDistance()))
-                            .routeInformation(route.getMapUrl())
-                            .estimatedTime(String.valueOf(route.getTime()))
-                            .build();
-                    log.info("Edit Result: tour = " + tour.getName() + ", trans = " + tour.getTransportType());
-                    return tour;
                 }
             }
             return null;
         });
+    }
+    private Tour buildTour(Long tourId, String name, String transportType, String description, String from, String to, MapQuestRoute route) {
+        return Tour.builder()
+                .tourId(tourId)
+                .name(name)
+                .transportType(transportType)
+                .description(description)
+                .from(from)
+                .to(to)
+                .tourDistance(String.valueOf(route.getDistance()))
+                .routeInformation(route.getMapUrl())
+                .estimatedTime(String.valueOf(route.getTime()))
+                .build();
     }
 
 }

@@ -30,7 +30,7 @@ public class TourGeneralView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle rb) {
         TourSelectionPublisher.getInstance().register(tourGeneralViewModel);
-        tableView.setItems(tourGeneralViewModel.getTourListItems());
+        tableView.setItems(tourGeneralViewModel.getTourGeneralItem());
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         TableColumn id = new TableColumn("ID");

@@ -4,8 +4,10 @@ import at.fhtw.swen2.tutorial.ApplicationContextProvider;
 import at.fhtw.swen2.tutorial.presentation.viewmodel.RouteViewModel;
 import at.fhtw.swen2.tutorial.presentation.viewmodel.TourListViewModel;
 import at.fhtw.swen2.tutorial.service.MapQuestService;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,10 +42,10 @@ public class RouteView {
         });
     }
 
-    public void updateImage(String newUrl) {
+    public void updateImage2(String newUrl) {
         log.info("Update Image with url:" + newUrl);
         url = newUrl;
-        if (url.startsWith("http")) {
+        if (url != null && url.startsWith("http")) {
             Image image = mapQuestService.getStaticMapImage(url);
             if (image != null) {
                 log.info("getImage success");
@@ -51,4 +53,31 @@ public class RouteView {
             }
         }
     }
+
+    public void updateImage(String newUrl) {
+        Task<Image> task = new Task<Image>() {
+            @Override
+            protected Image call() throws Exception {
+                log.info("Update Image with url:" + newUrl);
+                url = newUrl;
+                if (url != null && url.startsWith("http")) {
+                    Image image = mapQuestService.getStaticMapImage(url);
+                    return image;
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                Image image = getValue();
+                if (image != null) {
+                    log.info("getImage success");
+                    Platform.runLater(() -> mapImageView.setImage(image));
+                }
+            }
+        };
+
+        new Thread(task).start();
+    }
+
 }
