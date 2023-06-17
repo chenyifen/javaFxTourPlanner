@@ -1,12 +1,12 @@
 package at.fhtw.swen2.tutorial.presentation.view;
 
 import at.fhtw.swen2.tutorial.presentation.TourSelectionPublisher;
+import at.fhtw.swen2.tutorial.presentation.viewmodel.RouteViewModel;
 import at.fhtw.swen2.tutorial.presentation.viewmodel.TourListViewModel;
 import at.fhtw.swen2.tutorial.service.TourService;
 import at.fhtw.swen2.tutorial.service.dto.Tour;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -37,9 +37,13 @@ public class TourListView implements Initializable {
     private ListView<Tour> listView;
     @Autowired
     private TourListViewModel tourListViewModel;
+    @Autowired
+    private RouteViewModel routeViewModel;
 
     @Override
     public void initialize(URL location, ResourceBundle rb) {
+        TourSelectionPublisher.getInstance().register(tourListViewModel);
+        TourSelectionPublisher.getInstance().register(routeViewModel);
         tourListViewModel.initList(false);
         ObservableList<Tour> items = tourListViewModel.getTourListItems();
         listView.setItems(items);
@@ -90,7 +94,7 @@ public class TourListView implements Initializable {
 
     @FXML
     public void add() {
-        TourDialogView dialog = new TourDialogView();
+        TourEditDialogView dialog = new TourEditDialogView();
         Optional<Tour> result = dialog.showAndWait();
         if (result.isPresent()) {
             tourListViewModel.addItem(result.get());
@@ -101,7 +105,7 @@ public class TourListView implements Initializable {
     public void edit() {
         Tour tour = listView.getSelectionModel().getSelectedItem();
         if (tour != null) {
-            TourDialogView dialog = new TourDialogView(tour.getId(),
+            TourEditDialogView dialog = new TourEditDialogView(tour.getTourId(),
                     tour.getName(),
                     tour.getDescription(),
                     tour.getFrom(),
@@ -109,7 +113,7 @@ public class TourListView implements Initializable {
                     tour.getTransportType());
             Optional<Tour> result = dialog.showAndWait();
             if (result.isPresent()) {
-                tourListViewModel.edit(tour);
+                tourListViewModel.edit(result.get());
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);

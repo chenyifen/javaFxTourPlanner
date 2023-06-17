@@ -16,7 +16,7 @@ public class BuilderTest {
     void testTourBuilder() {
         Tour maxi = Tour.builder()
                 .name("Maxi")
-                .id(11L)
+                .tourId(11L)
                 .build();
     }
 

@@ -6,12 +6,14 @@ import at.fhtw.swen2.tutorial.service.dto.Tour;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+@Slf4j
 
 @Component
 public class TourListViewModel implements TourSelectionListener {
@@ -37,7 +39,27 @@ public class TourListViewModel implements TourSelectionListener {
         tourListItems.clear();
     }
 
+    //TODO for debug only
+    public void printStack() {
+        // Get the current thread's stack trace
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+
+        // Log the stack trace elements as a single string
+        StringBuilder sb = new StringBuilder();
+        sb.append("Call stack:\n");
+        for (StackTraceElement element : stackTrace) {
+            sb.append("  ").append(element.getClassName())
+                    .append(".").append(element.getMethodName())
+                    .append("(").append(element.getFileName())
+                    .append(":").append(element.getLineNumber())
+                    .append(")\n");
+        }
+        log.info(sb.toString());
+    }
+
+
     public void initList(Boolean dataChanged) {
+//        printStack();
         if(!dataChanged && tourListItems.size() > 0){
             //already init.
             return;
@@ -45,6 +67,7 @@ public class TourListViewModel implements TourSelectionListener {
         tourListItems.clear();
         masterData.clear();
         tourService.getTourList().forEach(p -> {
+            log.info("initList: p.id = " +p.getTourId()+",p.name="+p.getName());
             tourListItems.add(p);
             masterData.add(p);
         });
@@ -77,7 +100,7 @@ public class TourListViewModel implements TourSelectionListener {
     }
 
     public void deleteItem(Tour tour) {
-        if (selectedItem != null && selectedItem.getId() == tour.getId()) {
+        if (selectedItem != null && selectedItem.getTourId() == tour.getTourId()) {
             selectedItem = null;
         }
         if (tour != null) {

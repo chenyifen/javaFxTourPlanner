@@ -27,7 +27,7 @@ public class NewTourViewModel {
 
     public NewTourViewModel(Tour tour) {
         this.tour = tour;
-        this.id = new SimpleLongProperty(tour.getId());
+        this.id = new SimpleLongProperty(tour.getTourId());
         this.name = new SimpleStringProperty(tour.getName());
     }
 

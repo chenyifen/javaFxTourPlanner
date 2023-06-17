@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/10.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="at.fhtw.swen2.tutorial.presentation.view.RouteView">
+    <ImageView fx:id="mapImageView" fitWidth="600" fitHeight="200"/>
+</AnchorPane>

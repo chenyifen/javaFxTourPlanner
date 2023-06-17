@@ -1,25 +1,33 @@
 package at.fhtw.swen2.tutorial.presentation.view;
 
+import at.fhtw.swen2.tutorial.ApplicationContextProvider;
+import at.fhtw.swen2.tutorial.service.MapQuestService;
+import at.fhtw.swen2.tutorial.service.dto.MapQuestRoute;
 import at.fhtw.swen2.tutorial.service.dto.Tour;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Slf4j
-public class TourDialogView extends Dialog<Tour> {
+public class TourEditDialogView extends Dialog<Tour> {
 
     private final TextField nameField;
     private final TextArea descriptionField;
     private final TextField fromField;
     private final TextField toField;
     private final TextField transportTypeField;
+    @Autowired
+    private MapQuestService mapQuestService;
 
-    public TourDialogView() {
-        this(-1L, "", "", "", "", null);
+    public TourEditDialogView() {
+        this(0L, "", "", "", "", null);
     }
 
-    public TourDialogView(Long id, String name, String description, String from, String to, String transportType) {
+    public TourEditDialogView(Long tourId, String name, String description, String from, String to, String transportType) {
+        this.mapQuestService = ApplicationContextProvider.getApplicationContext().getBean(MapQuestService.class);
         log.debug("TourDialogView");
         setTitle("Add Tour");
         setHeaderText("Please enter tour details.");
@@ -81,16 +89,20 @@ public class TourDialogView extends Dialog<Tour> {
                     alert.showAndWait();
                     return null;
                 } else {
-                    //TODO api get
+                    MapQuestRoute route = mapQuestService.getRoute(fromField.getText(), toField.getText());
+                    log.info("get Rounte Info: " + route.toString());
                     Tour tour = Tour.builder()
-                            .id(id)
+                            .tourId(tourId)
                             .name(nameField.getText())
                             .transportType(transportTypeField.getText())
                             .description(descriptionField.getText())
                             .from(fromField.getText())
                             .to(toField.getText())
+                            .tourDistance(String.valueOf(route.getDistance()))
+                            .routeInformation(route.getMapUrl())
+                            .estimatedTime(String.valueOf(route.getTime()))
                             .build();
-                    log.info("Edit Result: tour = " +tour.getName() +", trans = " +tour.getTransportType());
+                    log.info("Edit Result: tour = " + tour.getName() + ", trans = " + tour.getTransportType());
                     return tour;
                 }
             }

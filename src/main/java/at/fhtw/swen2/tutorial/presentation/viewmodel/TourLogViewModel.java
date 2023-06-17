@@ -1,5 +1,6 @@
 package at.fhtw.swen2.tutorial.presentation.viewmodel;
 
+import at.fhtw.swen2.tutorial.presentation.TourLogSelectionListener;
 import at.fhtw.swen2.tutorial.presentation.TourSelectionListener;
 import at.fhtw.swen2.tutorial.service.TourLogService;
 import at.fhtw.swen2.tutorial.service.dto.Tour;
@@ -7,8 +8,7 @@ import at.fhtw.swen2.tutorial.service.dto.TourLog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
-public class TourLogViewModel implements TourSelectionListener {
-    private static final Logger LOG = LogManager.getLogger(TourLogViewModel.class);
+public class TourLogViewModel implements TourSelectionListener, TourLogSelectionListener {
     private final List<TourLog> masterData = new ArrayList<>();
     private final ObservableList<TourLog> tourLogItems = FXCollections.observableArrayList();
     @Autowired
@@ -26,14 +26,22 @@ public class TourLogViewModel implements TourSelectionListener {
     @Autowired
     TourListViewModel tourListViewModel;
     Tour selectedTour = null;
+    TourLog selectedTourLog = null;
 
     public ObservableList<TourLog> getTourLogItems() {
+        tourLogItems.forEach(p -> {
+            log.info("Tour Log: id =  "+p.getLogId());
+        });
         return tourLogItems;
     }
 
+    public TourLog getSelectedTourLog() {
+        return selectedTourLog;
+    }
+
     public void addItem(TourLog tourLog) {
-        tourLogItems.add(tourLog);
-        masterData.add(tourLog);
+        tourLogService.addNew(tourLog);
+        initList();
     }
 
     public void clearItems() {
@@ -46,12 +54,16 @@ public class TourLogViewModel implements TourSelectionListener {
             return;
         }
         tourLogItems.clear();
+        tourLogService.getTourLogList().forEach(p -> {
+            masterData.add(p);
+        });
         tourLogService.getTourLogListByTour(selectedTour).forEach(p -> {
-            addItem(p);
+            tourLogItems.add(p);
         });
     }
 
     public void filterList(String searchText) {
+        //TODO
         Task<List<TourLog>> task = new Task<>() {
             @Override
             protected List<TourLog> call() throws Exception {
@@ -82,16 +94,24 @@ public class TourLogViewModel implements TourSelectionListener {
 
 
     public void edit(TourLog tourLog) {
-
+        if (tourLog != null) {
+            tourLogService.update(tourLog);
+            initList();
+        }
     }
 
 
     @Override
     public void tourSelected(Tour tour) {
-        if(tour != null) {
-            LOG.info("tour Selected: " + tour.toString());
-        }
         selectedTour = tour;
         initList();
+    }
+
+    @Override
+    public void tourLogSelected(TourLog tourLog) {
+        if (tourLog != null) {
+            log.info("tour log Selected: " + tourLog.toString());
+            selectedTourLog = tourLog;
+        }
     }
 }

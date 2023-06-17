@@ -2,11 +2,15 @@ package at.fhtw.swen2.tutorial.service.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 @Builder
+@Getter
+@Setter
 public class Tour {
-    private Long id;
+    private Long tourId;
     private String name;
     private String description;
     private String from;
@@ -15,6 +19,7 @@ public class Tour {
     private String tourDistance;
     private String estimatedTime;
     private String routeInformation;
+
 
     public String toString(){
         StringBuilder builder = new StringBuilder(name);

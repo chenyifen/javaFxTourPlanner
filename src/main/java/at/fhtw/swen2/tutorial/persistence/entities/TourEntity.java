@@ -23,11 +23,10 @@ Tour Log:  date/time, comment, difficulty, total time, and rating
 @Table(name = "tour")
 
 public class TourEntity {
-
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "tour_id")
-        private Long id;
+        private Long tour_id;
         @Column(name = "name")
         private String name;
         @Column(name = "description")

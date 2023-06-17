@@ -15,6 +15,7 @@ public interface TourLogService {
 
     Boolean delete(TourLog tourLog);
 
-    // erweitern mit parameter create new service
+    Boolean update(TourLog tourLog);
+
 
 }

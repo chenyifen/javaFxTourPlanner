@@ -34,7 +34,7 @@ public class TourGeneralView implements Initializable {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         TableColumn id = new TableColumn("ID");
-        id.setCellValueFactory(new PropertyValueFactory("id"));
+        id.setCellValueFactory(new PropertyValueFactory("tourId"));
         TableColumn name = new TableColumn("Name");
         name.setCellValueFactory(new PropertyValueFactory("name"));
         TableColumn description = new TableColumn("Description");

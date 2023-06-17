@@ -50,9 +50,8 @@ public class TourServiceImpl implements TourService {
         }
 
         try {
-            TourEntity entity = entityManager.find(TourEntity.class, tour.getId());
+            TourEntity entity = entityManager.find(TourEntity.class, tour.getTourId());
             entityManager.remove(entity);
-//            tourRepository.delete(entity);
             log.info("Tour: " + tour.getName() + " is deleted successfully.");
             return true;
         } catch (Exception e) {
@@ -60,14 +59,15 @@ public class TourServiceImpl implements TourService {
         }
     }
 
-    @Override
     @Transactional
     public Boolean update(Tour tour) {
         if (tour == null) {
             return null;
         }
         try {
-            TourEntity entity = entityManager.find(TourEntity.class, tour.getId());
+            log.info("tour.id = " + tour.getTourId());
+            TourEntity entity = entityManager.find(TourEntity.class, tour.getTourId());
+            entity.setTour_id(tour.getTourId());
             entity.setName(tour.getName());
             entity.setDescription(tour.getDescription());
             entity.setEstimatedTime(tour.getEstimatedTime());
@@ -77,7 +77,6 @@ public class TourServiceImpl implements TourService {
             entity.setRouteInformation(tour.getRouteInformation());
             entity.setTransportType(entity.getTransportType());
             log.info("going to merge : " +entity.getName());
-            entityManager.merge(entity);
             entityManager.persist(entity);
             return true;
         } catch (Exception e) {
