@@ -1,8 +1,45 @@
 @startuml
+left to right direction
 
-User -> (createUser)
-User -> (viewList)
-User -> (search)
-
+rectangle "Tour Planner Application" {
+    rectangle "Tour List" {
+        User --> (viewList)
+        User --> (viewRouteTab)
+        User --> (viewGeneralTab)
+        User --> (viewAllTab)
+        User --> (clickAddButton)
+        User --> (clickDeleteButton)
+        User --> (clickEditButton)
+        (viewList) --> (selectTour)
+        (selectTour) --> (refreshTourDetail)
+        (selectTour) --> (showTourLogTable)
+        (viewRouteTab) --> (displayMap)
+        (viewAllTab) --> (showAllTourDetail)
+        (viewGeneralTab) --> (displayTourDetail)
+        (clickAddButton) --> (showTourDetailEditDialog)
+        (showTourDetailEditDialog) --> (getRouteInfomation)
+        (clickDeleteButton) --> (confirmTourDeletion)
+        (clickEditButton) --> (showTourDetailEditDialog)
+    }
+    rectangle "Tour Detail"{
+        (refreshTourDetail) --> (displayTourDetail)
+        (showTourLogTable) --> (displayTourLogTable)
+        (showTourDetailDialog) --> (showAPIData)
+    }
+    rectangle "Tour Log" {
+        User --> (clickAddLogButton)
+        User --> (clickDeleteButton)
+        User --> (clickEditButton)
+        (clickAddLogButton) --> (showLogDetailDialog)
+        (clickDeleteLogButton) --> (confirmLogDeletion)
+        (clickEditLogButton) --> (showLogDetailDialog)
+    }
+    rectangle "Menu"{
+            User --> (importTour)
+            User --> (exportTour)
+            (importTour) --> (refreshTourList)
+            (exportTour) --> (savePdfFile)
+        }
+}
 
 @enduml
