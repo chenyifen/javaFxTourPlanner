@@ -26,14 +26,11 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="%menu.file.title">
                             <items>
-                                <MenuItem fx:id="exportPDF" mnemonicParsing="false" text="%menu.file.export" onAction="#handleExportPDF"/>
+                                <MenuItem fx:id="exportCurrent" text="%menu.file.exportCurrent" onAction="#handleExportCurrentPDF"/>
                                 <SeparatorMenuItem mnemonicParsing="false"/>
-                                <MenuItem fx:id="miQuit" mnemonicParsing="false" onAction="#onFileClose"
-                                          text="%menu.file.quit"/>
+                                <MenuItem fx:id="export " mnemonicParsing="false" text="%menu.file.exportSummary" onAction="#handleExportSummaryPDF"/>
+                                <MenuItem fx:id="Import" mnemonicParsing="false" text="%menu.file.import" onAction="#handleImportPDF"/>
                             </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="%menu.edit.title">
-                            <!--                 TODO -->
                         </Menu>
                         <Menu mnemonicParsing="false" text="%menu.help.title">
                             <items>

@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="javafx_spring" target="16" />
+      <module name="javafx_spring" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
