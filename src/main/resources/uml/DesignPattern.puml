@@ -1,0 +1,38 @@
+@startuml
+interface TourSelectionPublisher {
+  + subscribe(TourSelectionListener subscriber)
+  + unsubscribe(TourSelectionListener subscriber)
+  + publish(Tour tour)
+}
+
+interface TourSelectionListener {
+  + onTourSelected(Tour tour)
+}
+
+class RouteViewModel implements TourSelectionListener {
+  + onTourSelected(Tour tour)
+}
+
+class TourListViewModel implements TourSelectionListener {
+  + onTourSelected(Tour tour)
+}
+
+class TourListView {
+  +listView: ListView<Tour>
+  +initialize()
+}
+
+class TourSelectionController {
+  - publisher: TourSelectionPublisher
+  - subscribers: Set<TourSelectionListener>
+  + onTourSelected(Tour tour)
+  + subscribe(TourSelectionListener subscriber)
+  + unsubscribe(TourSelectionListener subscriber)
+}
+
+TourSelectionPublisher -> TourSelectionListener
+TourSelectionListener <|-down- RouteViewModel
+TourSelectionListener <|-down- TourListViewModel
+TourListViewModel -> TourListView
+TourSelectionController -> TourSelectionPublisher
+@enduml
