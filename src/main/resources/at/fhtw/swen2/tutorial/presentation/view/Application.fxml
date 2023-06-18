@@ -26,7 +26,7 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="%menu.file.title">
                             <items>
-                                <MenuItem fx:id="miPreferences" mnemonicParsing="false" text="%menu.file.preferences"/>
+                                <MenuItem fx:id="exportPDF" mnemonicParsing="false" text="%menu.file.export" onAction="#handleExportPDF"/>
                                 <SeparatorMenuItem mnemonicParsing="false"/>
                                 <MenuItem fx:id="miQuit" mnemonicParsing="false" onAction="#onFileClose"
                                           text="%menu.file.quit"/>

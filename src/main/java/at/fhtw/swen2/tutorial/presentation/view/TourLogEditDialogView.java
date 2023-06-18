@@ -24,7 +24,11 @@ public class TourLogEditDialogView extends Dialog<TourLog> {
 
     public TourLogEditDialogView(UUID logId, String name, String comment, String difficulty, String totalTime, String rating, Long tourId) {
         log.debug("TourLogDialogView");
-        setTitle("Add Tour Log");
+        if (name.equals("")) {
+            setTitle("Add Tour Log");
+        }else{
+            setTitle("Edit Tour Log");
+        }
         setHeaderText("Please enter tour log details.");
 
         // Set the button types

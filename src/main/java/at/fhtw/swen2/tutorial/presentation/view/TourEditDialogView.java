@@ -30,7 +30,11 @@ public class TourEditDialogView extends Dialog<Tour> {
     public TourEditDialogView(Long tourId, String name, String description, String from, String to, String transportType) {
         this.mapQuestService = ApplicationContextProvider.getApplicationContext().getBean(MapQuestService.class);
         log.debug("TourDialogView");
-        setTitle("Add Tour");
+        if(name.equals("")) {
+            setTitle("Add Tour");
+        }else {
+            setTitle("Edit Tour");
+        }
         setHeaderText("Please enter tour details.");
 
         // Set the button types
