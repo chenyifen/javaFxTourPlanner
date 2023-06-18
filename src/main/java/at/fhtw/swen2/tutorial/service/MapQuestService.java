@@ -47,24 +47,25 @@ public class MapQuestService {
 
         String requestBody = "{\"locations\":[{\"street\":\"" + from + "\"},{\"street\":\"" + to + "\"}]}";
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<String> response = restTemplate.exchange("http://www.mapquestapi.com/directions/v2/route?key={key}", HttpMethod.POST, request, String.class, params);
-
-        log.info("MapQuest request :" + request);
-
-        String json = response.getBody();
-        log.info("MapQuest response :" + json);
         MapQuestRoute route = new MapQuestRoute();
-        route.setDistance(0);
-        route.setMapUrl("");
-        route.setTime(0);
-        // 解析JSON数据
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
+            ResponseEntity<String> response = restTemplate.exchange("http://www.mapquestapi.com/directions/v2/route?key={key}", HttpMethod.POST, request, String.class, params);
+
+            log.info("MapQuest request :" + request);
+
+            String json = response.getBody();
+            log.info("MapQuest response :" + json);
+            route.setDistance(0);
+            route.setMapUrl("");
+            route.setTime(0);
+            // 解析JSON数据
+            ObjectMapper objectMapper = new ObjectMapper();
+
             JsonNode rootNode = objectMapper.readTree(json);
             JsonNode routeNode = rootNode.get("route");
             if (routeNode != null) {
                 JsonNode legsNode = routeNode.get("legs");
-                if(legsNode != null) {
+                if (legsNode != null) {
                     JsonNode firstLegNode = legsNode.get(0);
                     JsonNode maneuversNode = firstLegNode.get("maneuvers");
                     JsonNode firstManeuverNode = maneuversNode.get(0);
@@ -75,9 +76,9 @@ public class MapQuestService {
                 }
                 return route;
             }
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
+            log.error(e.toString());
             return route;
-//            throw new RuntimeException("Failed to parse JSON response from MapQuest API", e);
         }
         return route;
     }

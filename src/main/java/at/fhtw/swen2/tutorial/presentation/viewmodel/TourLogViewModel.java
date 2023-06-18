@@ -40,7 +40,7 @@ public class TourLogViewModel implements TourSelectionListener, TourLogSelection
     }
 
     public void addItem(TourLog tourLog) {
-        tourLogService.addNew(tourLog);
+        tourLogService.addNew(selectedTour, tourLog);
         initList();
     }
 

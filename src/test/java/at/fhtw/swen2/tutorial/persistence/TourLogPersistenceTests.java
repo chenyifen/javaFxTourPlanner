@@ -56,7 +56,7 @@ class TourLogPersistenceTests {
                 .rating("5")
                 .tour(tour)
                 .build();
-        tourLogService.addNew(tourLog);
+        tourLogService.addNew(tour, tourLog);
 
         List<TourLog> list = tourLogService.getTourLogList();
         for (int i = 0; i < list.size(); i++) {
@@ -98,7 +98,7 @@ class TourLogPersistenceTests {
                 .rating("5")
                 .tour(tour)
                 .build();
-        tourLogService.addNew(tourLog);
+        tourLogService.addNew(tour, tourLog);
 
         List<TourLog> list = tourLogService.getTourLogList();
         for (int i = 0; i < list.size(); i++) {

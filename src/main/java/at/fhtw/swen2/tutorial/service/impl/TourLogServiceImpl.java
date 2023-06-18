@@ -7,6 +7,7 @@ import at.fhtw.swen2.tutorial.persistence.repositories.TourRepository;
 import at.fhtw.swen2.tutorial.service.TourLogService;
 import at.fhtw.swen2.tutorial.service.dto.Tour;
 import at.fhtw.swen2.tutorial.service.dto.TourLog;
+import at.fhtw.swen2.tutorial.service.mapper.TourLogMapper;
 import at.fhtw.swen2.tutorial.service.mapper.TourMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +28,13 @@ public class TourLogServiceImpl implements TourLogService {
     private TourLogRepository tourLogRepository;
     @Autowired
     private TourRepository tourRepository;
-    @Autowired
-    private at.fhtw.swen2.tutorial.service.mapper.TourLogMapper TourLogMapper;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     public List<TourLog> getTourLogList() {
-        return TourLogMapper.fromEntity(tourLogRepository.findAll());
+        return new TourLogMapper().fromEntity(tourLogRepository.findAll());
     }
 
     @Override
@@ -43,28 +42,30 @@ public class TourLogServiceImpl implements TourLogService {
         if (tour == null || tour.getTourId() == null) {
             return new ArrayList<>();
         }
-        return TourLogMapper.fromEntity(tourLogRepository.findByTour(new TourMapper().toEntity(tour)));
+        return new TourLogMapper().fromEntity(tourLogRepository.findByTour(new TourMapper().toEntity(tour)));
     }
 
 
+    @Transactional
     @Override
-    public TourLog addNew(TourLog tourLog) {
-        if (tourLog == null || tourLog.getTour() == null) {
+    public TourLog addNew(Tour tour, TourLog tourLog) {
+        if (tour == null || tourLog == null || tourLog.getTour() == null) {
+            log.error("Add tour log fail. tour  or tour log is null");
             return null;
         }
-        TourEntity tour = tourRepository.getOne(tourLog.getTour().getTourId());
-        log.info("Add log to : " + tour.toString());
-        if (tour == null) {
-            return null;
-        }
-        TourLogEntity entity = TourLogMapper.toEntity(tourLog);
-        entity.setTour(tour);
+        TourLogEntity tourLogEntity = new TourLogMapper().toEntity(tourLog);
+        TourEntity tourEntity = new TourMapper().toEntity(tour);
+        log.info("Map to Tour: " +tour.toString());
+        tourLogEntity.setTour(tourEntity);
         List<TourLogEntity> tourLogs = tour.getTourLogs();
-        tourLogs.add(entity);
+        if(tourLog  == null){
+            tourLogs = new ArrayList<>();
+        }
+        tourLogs.add(tourLogEntity);
         tour.setTourLogs(tourLogs);
-        tourLogRepository.save(entity);
-//        tourRepository.save(tour);
-        log.info("Add New Tour Log:" + entity.getName() + ", To Tour_ID:" + tour.getTour_id());
+        tourLogRepository.save(tourLogEntity);
+
+        log.info("Add New Tour Log:" + tourLog.getName() + ", To Tour_ID:" + tour.getTourId());
         return tourLog;
     }
 

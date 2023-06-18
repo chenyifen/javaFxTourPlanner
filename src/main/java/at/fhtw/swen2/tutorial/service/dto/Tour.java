@@ -1,9 +1,12 @@
 package at.fhtw.swen2.tutorial.service.dto;
 
+import at.fhtw.swen2.tutorial.persistence.entities.TourLogEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -19,6 +22,7 @@ public class Tour {
     private String tourDistance;
     private String estimatedTime;
     private String routeInformation;
+    private List<TourLogEntity> tourLogs;
 
 
     public String toString(){

@@ -24,6 +24,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Scope;
@@ -153,42 +155,42 @@ public class ApplicationView implements Initializable, StageAware {
 
     @FXML
     public void handleExportSummaryPDF(ActionEvent event) {
-        try {
-            List<Tour> tours = tourListViewModel.getTourListItems();
-            Document document = new Document();
-            PdfWriter.getInstance(document, new FileOutputStream("Summary" + ".pdf"));
-            document.open();
-
-            document.add(new Paragraph("Tour Number: " + String.valueOf(tours.size())));
-            document.add(new Paragraph("\n"));
-
-            tours.forEach(tour ->{
-                try {
-                document.add(new Paragraph(tour.getName()));
-                document.add(new Paragraph("Tour Description: " + tour.getDescription()));
-                document.add(new Paragraph("From: " + tour.getFrom()));
-                document.add(new Paragraph("Tour To: " + tour.getTo()));
-                document.add(new Paragraph("Tour TransportType: " + tour.getTransportType()));
-                document.add(new Paragraph("Tour EstimatedTime: " + tour.getEstimatedTime()));
-                document.add(new Paragraph("Tour TourDistance: " + tour.getTourDistance()));
-                document.add(new Paragraph("\n"));
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            });
-            document.close();
-
-            File file = new File("Summary.pdf");
-            file.createNewFile();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(null);
-            alert.setContentText("Export PDF Success.");
-        } catch (IOException | DocumentException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(null);
-            alert.setContentText("Export PDF Fail.");
-            e.printStackTrace();
-        }
+//        try {
+//            List<Tour> tours = tourListViewModel.getTourListItems();
+//            Document document = new Document();
+//            PdfWriter.getInstance(document, new FileOutputStream("Summary" + ".pdf"));
+//            document.open();
+//
+//            document.add(new Paragraph("Tour Number: " + String.valueOf(tours.size())));
+//            document.add(new Paragraph("\n"));
+//
+//            tours.forEach(tour ->{
+//                try {
+//                document.add(new Paragraph(tour.getName()));
+//                document.add(new Paragraph("Tour Description: " + tour.getDescription()));
+//                document.add(new Paragraph("From: " + tour.getFrom()));
+//                document.add(new Paragraph("Tour To: " + tour.getTo()));
+//                document.add(new Paragraph("Tour TransportType: " + tour.getTransportType()));
+//                document.add(new Paragraph("Tour EstimatedTime: " + tour.getEstimatedTime()));
+//                document.add(new Paragraph("Tour TourDistance: " + tour.getTourDistance()));
+//                document.add(new Paragraph("\n"));
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+//            });
+//            document.close();
+//
+//            File file = new File("Summary.pdf");
+//            file.createNewFile();
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//            alert.setHeaderText(null);
+//            alert.setContentText("Export PDF Success.");
+//        } catch (IOException | DocumentException e) {
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//            alert.setHeaderText(null);
+//            alert.setContentText("Export PDF Fail.");
+//            e.printStackTrace();
+//        }
     }
     public void importPDF(String fileName) throws IOException {
         PDDocument document = PDDocument.load(new File(fileName));
@@ -198,14 +200,15 @@ public class ApplicationView implements Initializable, StageAware {
 
         String[] lines = text.split("\\r?\\n");
 
-        TourBuilder tourBuilder = new TourBuilder();
+        Tour.TourBuilder tourBuilder = Tour.builder();
+
         Tour currentTour = null;
-        TourLogBuilder tourLogBuilder = null;
+        TourLog.TourLogBuilder tourLogBuilder = null;
 
         for (String line : lines) {
             if (line.startsWith("Tour Name: ")) {
                 if (currentTour != null) {
-                    addTourToDatabase(currentTour);
+//                    addTourToDatabase(currentTour);
                 }
                 tourBuilder.name(line.substring("Tour Name: ".length()));
                 currentTour = tourBuilder.build();
@@ -219,31 +222,31 @@ public class ApplicationView implements Initializable, StageAware {
             } else if (currentTour != null && line.startsWith("Transport Type: ")) {
                 tourBuilder.transportType(line.substring("Transport Type: ".length()));
             } else if (currentTour != null && line.startsWith("Estimated Time: ")) {
-                tourBuilder.estimatedTime(Double.parseDouble(line.substring("Estimated Time: ".length())));
+                tourBuilder.estimatedTime(line.substring("Estimated Time: ".length()));
             } else if (currentTour != null && line.startsWith("Tour Distance: ")) {
-                tourBuilder.tourDistance(Double.parseDouble(line.substring("Tour Distance: ".length())));
+                tourBuilder.tourDistance(line.substring("Tour Distance: ".length()));
             } else if (currentTour != null && line.startsWith("Tour Route Information: ")) {
                 tourBuilder.routeInformation(line.substring("Tour Route Information: ".length()));
             } else if (currentTour != null && line.startsWith("Tour Log Name: ")) {
                 if (tourLogBuilder != null) {
-                    currentTour.addTourLog(tourLogBuilder.build());
+//                    currentTour.addTourLog(tourLogBuilder.build());
                 }
-                tourLogBuilder = new TourLogBuilder();
+//                tourLogBuilder = new TourLogBuilder();
                 tourLogBuilder.name(line.substring("Tour Log Name: ".length()));
             } else if (currentTour != null && tourLogBuilder != null && line.startsWith("Tour Log Comment: ")) {
                 tourLogBuilder.comment(line.substring("Tour Log Comment: ".length()));
             } else if (currentTour != null && tourLogBuilder != null && line.startsWith("Tour Log Difficulty: ")) {
                 tourLogBuilder.difficulty(line.substring("Tour Log Difficulty: ".length()));
             } else if (currentTour != null && tourLogBuilder != null && line.startsWith("Tour Log Rating: ")) {
-                tourLogBuilder.rating(Integer.parseInt(line.substring("Tour Log Rating: ".length())));
+                tourLogBuilder.rating(line.substring("Tour Log Rating: ".length()));
             } else if (currentTour != null && tourLogBuilder != null && line.startsWith("Tour Log Total Time: ")) {
-                tourLogBuilder.totalTime(Double.parseDouble(line.substring("Tour Log Total Time: ".length())));
-                currentTour.addTourLog(tourLogBuilder.build());
-                addTourLogToDatabase(tourLogBuilder.build());
+                tourLogBuilder.totalTime(line.substring("Tour Log Total Time: ".length()));
+//                currentTour.addTourLog(tourLogBuilder.build());
+//                addTourLogToDatabase(tourLogBuilder.build());
             }
         }
         if (currentTour != null) {
-            addTourToDatabase(currentTour);
+//            addTourToDatabase(currentTour);
         }
     }
 

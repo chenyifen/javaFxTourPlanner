@@ -11,7 +11,7 @@ public interface TourLogService {
 
     List<TourLog> getTourLogListByTour(Tour tour);
 
-    TourLog addNew(TourLog tourLog);
+    TourLog addNew(Tour tour, TourLog tourLog);
 
     Boolean delete(TourLog tourLog);
 

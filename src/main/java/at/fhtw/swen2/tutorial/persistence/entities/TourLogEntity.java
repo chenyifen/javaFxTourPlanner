@@ -49,7 +49,7 @@ public class TourLogEntity {
 
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tour_id", referencedColumnName = "tour_id", insertable = false, updatable = false)
     private TourEntity tour;
 

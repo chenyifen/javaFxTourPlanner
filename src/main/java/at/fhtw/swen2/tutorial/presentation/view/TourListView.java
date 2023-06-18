@@ -97,8 +97,10 @@ public class TourListView implements Initializable {
         TourEditDialogView dialog = new TourEditDialogView();
         Optional<Tour> result = dialog.showAndWait();
         if (result.isPresent()) {
+            listView.getItems().clear();
             tourListViewModel.addItem(result.get());
         }
+
     }
 
     @FXML

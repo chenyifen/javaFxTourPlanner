@@ -33,6 +33,7 @@ public class TourListViewModel implements TourSelectionListener {
     public void addItem(Tour tour) {
         tourService.addNew(tour);
         tourListItems.add(tour);
+        initList(true);
     }
 
     public void clearItems() {
@@ -56,7 +57,6 @@ public class TourListViewModel implements TourSelectionListener {
         }
         log.info(sb.toString());
     }
-
 
     public void initList(Boolean dataChanged) {
 //        printStack();

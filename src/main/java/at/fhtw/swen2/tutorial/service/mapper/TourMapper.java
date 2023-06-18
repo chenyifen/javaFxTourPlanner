@@ -1,8 +1,13 @@
 package at.fhtw.swen2.tutorial.service.mapper;
 
 import at.fhtw.swen2.tutorial.persistence.entities.TourEntity;
+import at.fhtw.swen2.tutorial.persistence.entities.TourLogEntity;
 import at.fhtw.swen2.tutorial.service.dto.Tour;
+import at.fhtw.swen2.tutorial.service.dto.TourLog;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class  TourMapper extends AbstractMapper<TourEntity, Tour> {
@@ -22,6 +27,7 @@ public class  TourMapper extends AbstractMapper<TourEntity, Tour> {
                 .tourDistance(entity.getTourDistance())
                 .routeInformation(entity.getRouteInformation())
                 .transportType(entity.getTransportType())
+                .tourLogs(entity.getTourLogs())
                 .build();
     }
 
@@ -37,6 +43,7 @@ public class  TourMapper extends AbstractMapper<TourEntity, Tour> {
                 .routeInformation(tour.getRouteInformation())
                 .tourDistance(tour.getTourDistance())
                 .transportType(tour.getTransportType())
+                .tourLogs(tour.getTourLogs())
                 .build();
     }
 

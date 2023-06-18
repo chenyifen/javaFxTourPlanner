@@ -1,15 +1,12 @@
 package at.fhtw.swen2.tutorial.persistence.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+//@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +18,8 @@ estimated time, route information (an image with the tour map)
 Tour Log:  date/time, comment, difficulty, total time, and rating
  */
 @Table(name = "tour")
-
+@Getter
+@Setter
 public class TourEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +41,6 @@ public class TourEntity {
         private String estimatedTime;
         @Column(name = "route_information")
         private String routeInformation;
-        @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+        @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
         private List<TourLogEntity> tourLogs = new ArrayList<>();
 }
