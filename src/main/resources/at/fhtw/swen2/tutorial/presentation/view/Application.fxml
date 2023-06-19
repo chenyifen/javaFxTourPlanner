@@ -27,9 +27,8 @@
                         <Menu mnemonicParsing="false" text="%menu.file.title">
                             <items>
                                 <MenuItem fx:id="exportCurrent" text="%menu.file.exportCurrent" onAction="#handleExportCurrentPDF"/>
-                                <MenuItem fx:id="exportCurrent" text="%menu.file.exportCurrent" onAction="#handleExportCurrentPDF"/>
-<!--                                <MenuItem fx:id="exportSummary " text="%menu.file.exportSummary" onAction="#handleExportSummaryPDF"/>-->
-<!--                                <MenuItem fx:id="Import" mnemonicParsing="false" text="%menu.file.import" onAction="#handleI"/>-->
+                                <MenuItem fx:id="exportSummary" text="%menu.file.exportSummary" onAction="#handleExportSummaryPDF"/>
+                                <MenuItem fx:id="importPDF" text="%menu.file.import" onAction="#importPDF"/>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="%menu.help.title">

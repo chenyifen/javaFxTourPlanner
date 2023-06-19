@@ -1,5 +1,7 @@
 package at.fhtw.swen2.tutorial.presentation.view;
 
+import at.fhtw.swen2.tutorial.presentation.TourListChangeListener;
+import at.fhtw.swen2.tutorial.presentation.TourListChangePublisher;
 import at.fhtw.swen2.tutorial.presentation.TourSelectionPublisher;
 import at.fhtw.swen2.tutorial.presentation.viewmodel.RouteViewModel;
 import at.fhtw.swen2.tutorial.presentation.viewmodel.TourListViewModel;
@@ -27,7 +29,7 @@ import java.util.ResourceBundle;
 @Component
 @Scope("prototype")
 @Slf4j
-public class TourListView implements Initializable {
+public class TourListView implements Initializable , TourListChangeListener{
 
     List<String> tourNames = FXCollections.observableArrayList();
     @Autowired
@@ -43,9 +45,9 @@ public class TourListView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle rb) {
+        TourListChangePublisher.getInstance().register(this);
         TourSelectionPublisher.getInstance().register(tourListViewModel);
         TourSelectionPublisher.getInstance().register(routeViewModel);
-//        tourListViewModel.initList(true);
         ObservableList<Tour> items = tourListViewModel.getTourListItems();
         listView.setItems(items);
         listView.setCellFactory(param -> new ListCell<Tour>() {
@@ -124,5 +126,11 @@ public class TourListView implements Initializable {
             alert.setContentText("Please select a Tour before editing.");
             alert.showAndWait();
         }
+    }
+
+    @Override
+    public void newTourAdded() {
+        listView.getItems().clear();
+        tourListViewModel.initList(true);
     }
 }

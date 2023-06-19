@@ -1,0 +1,9 @@
+package at.fhtw.swen2.tutorial.presentation;
+
+import at.fhtw.swen2.tutorial.service.dto.Tour;
+
+public interface TourListChangeListener {
+
+    void newTourAdded();
+
+}
