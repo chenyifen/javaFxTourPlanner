@@ -76,8 +76,9 @@ public class TourLogServiceImpl implements TourLogService {
         }
         try {
             TourLogEntity entity = entityManager.find(TourLogEntity.class, tourLog.getLogId());
-            entityManager.remove(entity);
-            log.info("Tour: " + tourLog.getName() + " is deleted successfully.");
+//            entityManager.remove(entity);
+            tourLogRepository.deleteTourLogById(tourLog.getLogId().toString());
+            log.info("Tour: " + tourLog.getLogId().toString() +"  , tour Name:"+ tourLog.getName());
             return true;
         } catch (Exception e) {
             return false;
